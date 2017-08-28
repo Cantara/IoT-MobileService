@@ -1,0 +1,19 @@
+.board {
+  width: 150px;
+  height: 150px;
+  position: relative;
+  margin: 30px auto;
+  -webkit-transform-style: preserve-3d;
+  transform-style: preserve-3d;
+}
+
+.face {
+  width: 150px;
+  height: 150px;
+  position: absolute;
+  font-size: 80px;
+  text-align: center;
+  line-height: 150px;
+  opacity: 0.6;
+  background-image: './logo.png';
+}
