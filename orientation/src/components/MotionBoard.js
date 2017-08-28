@@ -1,7 +1,7 @@
 import React from 'react'
 
 import logo from './logo.png'
-import './MotionCube.css'
+import './MotionBoard.css'
 
 const UnsupportedInfo = () => {
   const hasNoDeviceOrientation = !('ondeviceorientation' in window)
