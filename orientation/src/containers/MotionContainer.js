@@ -1,4 +1,5 @@
 import { connect } from 'mqtt'
+import debounce from 'lodash.debounce'
 
 import { withRouter } from 'react-router-dom'
 import { compose, lifecycle, withState, withHandlers } from 'recompose'
@@ -21,7 +22,7 @@ export default compose (
     gamma: 0, // -180 to 180
   })),
   withHandlers({
-    handleOrientation: ({ orientation, setOrientation }) => e => {
+    handleOrientation: debounce(({ orientation, setOrientation }) => e => {
       // certain devices use different orientation variables.
       const alphaGammaFlipped = e.alpha < 0 || e.gamma > 180
       setOrientation({
@@ -29,7 +30,7 @@ export default compose (
         beta: e.beta,
         gamma: alphaGammaFlipped ? e.alpha : e.gamma,
       })
-    },
+    }, 100),
     handleMQTTConnect: () => e => {
       console.log('handleMQTTConnect', this, e)
     },
