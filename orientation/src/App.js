@@ -8,8 +8,8 @@ class App extends Component {
   render() {
     return (
       <Router>
-        <div className="App">
-          <div className="App-header">
+        <div className='App'>
+          <div className='App-header'>
             <h2>Change device orientation!</h2>
           </div>
           <MotionContainer />

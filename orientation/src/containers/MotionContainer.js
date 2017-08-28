@@ -1,10 +1,10 @@
-import React from 'react'
 import { connect } from 'mqtt'
 
 import { withRouter } from 'react-router-dom'
 import { compose, lifecycle, withState, withHandlers } from 'recompose'
 
-import { mqttUri, mqttOptions } from '../utils/MQTT'
+// import { mqttUri, mqttOptions } from '../utils/MQTT'
+import { mqttOptions } from '../utils/MQTT'
 
 import MotionBoard from '../components/MotionBoard'
 
@@ -32,7 +32,7 @@ export default compose (
     },
     handleMQTTConnect: () => e => {
       console.log('handleMQTTConnect', this, e)
-    }
+    },
   }),
   lifecycle({
     componentDidMount() {
@@ -47,6 +47,6 @@ export default compose (
     },
     componentWillUnmount() {
       window.removeEventListener('deviceorientation', this.props.handleOrientation)
-    }
+    },
   }),
 )(MotionBoard)
