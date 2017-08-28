@@ -1,6 +1,6 @@
 import React from 'react'
 
-import logo from './Capra_logo_web.svg'
+import logo from './Capra_logo_web_transparent.svg'
 import './MotionBoard.css'
 
 const UnsupportedInfo = () => {
