@@ -1,5 +1,6 @@
 {
-  "name": "qrclient",
+  "name": "orientation",
+  "homepage": "https://iotlab.cantara.no/javazone/orientation",
   "version": "0.1.0",
   "private": true,
   "dependencies": {

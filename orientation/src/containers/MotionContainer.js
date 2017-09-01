@@ -11,8 +11,17 @@ export default compose (
     gamma: 0, // -180 to 180
   })),
   withState('isAuth', 'setIsAuth', true),
+  withState('canSend', 'setCanSend', true),
   withHandlers({
-    handleOrientation: ({ orientation, setOrientation, isAuth, setIsAuth }) => e => {
+    handleOrientation: ({
+      location,
+      orientation,
+      setOrientation,
+      isAuth,
+      setIsAuth,
+      canSend,
+      setCanSend,
+    }) => e => {
       // certain devices use different orientation variables.
       const alphaGammaFlipped = e.alpha < 0 || e.gamma > 180
 
@@ -21,23 +30,37 @@ export default compose (
         beta: e.beta,
         gamma: alphaGammaFlipped ? e.alpha : e.gamma,
       }
-      // console.log(JSON.stringify(eventOrientation))
+
       // Update state
       setOrientation(eventOrientation)
-      // send to server if allowed
-      console.log(isAuth, setIsAuth)
-      if (isAuth) {
-        // Move out and call debounced version. setIsAuth(false) on error 403/401
-        fetch(`https://iotlab.cantara.no/javazone/orientation/ok`, {
+      // send to server if isAuth and canSend
+      const sessionKey = location.search != null && location.search !== ''
+        ? decodeURIComponent(location.search).replace(/^.*=/, '')
+        : 'nosession'
+      const stringifiedOrientation = {
+        alpha: `${eventOrientation.alpha}`,
+        beta: `${eventOrientation.beta}`,
+        gamma: `${eventOrientation.gamma}`,
+      }
+      if (isAuth && canSend) {
+        // disable sending until next interval
+        setCanSend(false)
+        // post eventOrientation
+        fetch(`https://iotlab.cantara.no/javazone/orientation/${sessionKey}`, {
           method: 'POST',
           headers: {
-            'Content-Type': 'application/json',
+            'Content-Type': 'application/json;charset=utf8',
           },
-          body: eventOrientation,
+          body: JSON.stringify(stringifiedOrientation),
         }).then((response) => {
           console.log('response', response)
+          // disable next request if response isnt ok
+          if (!response.ok) {
+            setIsAuth(false)
+          }
         }, (error) => {
           console.log('error', error)
+          // Stop next request on any error
           setIsAuth(false)
         })
       }
@@ -46,6 +69,9 @@ export default compose (
   lifecycle({
     componentDidMount() {
       window.addEventListener('deviceorientation', this.props.handleOrientation)
+      setInterval(() =>{
+        this.props.setCanSend(true)
+      }, 250)
     },
     componentWillUnmount() {
       window.removeEventListener('deviceorientation', this.props.handleOrientation)
