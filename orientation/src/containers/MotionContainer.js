@@ -1,18 +1,7 @@
-import { connect } from 'mqtt'
-import debounce from 'lodash.debounce'
-
 import { withRouter } from 'react-router-dom'
 import { compose, lifecycle, withState, withHandlers } from 'recompose'
 
-// import { mqttUri, mqttOptions } from '../utils/MQTT'
-import { mqttOptions } from '../utils/MQTT'
-
 import MotionBoard from '../components/MotionBoard'
-
-/**
- * skille ut mqtt i egen container
- * (WBN) flytte orientation til redux -> både motionboard og mqtt bruker samme data
- */
 
 export default compose (
   withRouter,
@@ -21,30 +10,42 @@ export default compose (
     beta: 0, // -180 to 180
     gamma: 0, // -180 to 180
   })),
+  withState('isAuth', 'setIsAuth', true),
   withHandlers({
-    handleOrientation: debounce(({ orientation, setOrientation }) => e => {
+    handleOrientation: ({ orientation, setOrientation, isAuth, setIsAuth }) => e => {
       // certain devices use different orientation variables.
       const alphaGammaFlipped = e.alpha < 0 || e.gamma > 180
-      setOrientation({
+
+      const eventOrientation = {
         alpha: alphaGammaFlipped ? e.gamme : e.alpha,
         beta: e.beta,
         gamma: alphaGammaFlipped ? e.alpha : e.gamma,
-      })
-    }, 100),
-    handleMQTTConnect: () => e => {
-      console.log('handleMQTTConnect', this, e)
+      }
+      // console.log(JSON.stringify(eventOrientation))
+      // Update state
+      setOrientation(eventOrientation)
+      // send to server if allowed
+      console.log(isAuth, setIsAuth)
+      if (isAuth) {
+        // Move out and call debounced version. setIsAuth(false) on error 403/401
+        fetch(`https://iotlab.cantara.no/javazone/orientation/ok`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: eventOrientation,
+        }).then((response) => {
+          console.log('response', response)
+        }, (error) => {
+          console.log('error', error)
+          setIsAuth(false)
+        })
+      }
     },
   }),
   lifecycle({
     componentDidMount() {
       window.addEventListener('deviceorientation', this.props.handleOrientation)
-      const client = connect({
-        ...mqttOptions,
-        clientId: `capracube_${Math.random().toString(16).substring(2,8)}`,
-      })
-      console.log(this.props, client)
-      // client.on('connect', this.props.handleMQTTConnect)
-      client.on('error', (e) => console.log('mqttError: ', e))
     },
     componentWillUnmount() {
       window.removeEventListener('deviceorientation', this.props.handleOrientation)
