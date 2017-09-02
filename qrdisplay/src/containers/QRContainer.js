@@ -16,7 +16,6 @@ export default compose (
       // fetch session code
       fetch(`https://iotlab.cantara.no/javazone/code`, {
         method: 'GET',
-        mode: 'no-cors',
         headers: {
           'Content-Type': 'application/json;charset=utf8',
         },
