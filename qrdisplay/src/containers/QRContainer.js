@@ -17,10 +17,16 @@ export default compose (
       fetch(`https://iotlab.cantara.no/javazone/code`, {
         method: 'GET',
         headers: {
-          'Content-Type': 'application/json;charset=utf8',
+          'Authorization': `Basic ${window.btoa('qrscanner:qrscanner')}`,
+          'Content-Type': 'application/json;charset=UTF-8',
         },
-      }).then((response) => {
-        const sessionkey = response.code || 'ok'
+      }).then((response, data) => {
+        return response.json()
+      }, (error) => {
+        console.log('error', error)
+        setFetchError(error)
+      }).then((resJson) => {
+        const sessionkey = resJson.code || 'nosession'
         new QRious({
           element: document.getElementById('qr'),
           background: '#155aaa',
@@ -29,12 +35,9 @@ export default compose (
           foregroundAlpha: 1,
           level: 'H',
           padding: 15,
-          size: 400,
+          size: 300,
           value: `https://iotlab.cantara.no/javazone/orientation?session=${sessionkey}`,
         })
-      }, (error) => {
-        console.log('error', error)
-        setFetchError(error)
       })
     },
   }),

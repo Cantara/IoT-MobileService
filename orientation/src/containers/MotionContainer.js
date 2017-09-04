@@ -49,7 +49,7 @@ export default compose (
         fetch(`https://iotlab.cantara.no/javazone/orientation/${sessionKey}`, {
           method: 'POST',
           headers: {
-            'Content-Type': 'application/json;charset=utf8',
+            'Content-Type': 'application/json;charset=UTF-8',
           },
           body: JSON.stringify(stringifiedOrientation),
         }).then((response) => {
