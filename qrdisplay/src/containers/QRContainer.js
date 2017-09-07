@@ -27,6 +27,7 @@ export default compose (
         setFetchError(error)
       }).then((resJson) => {
         const sessionkey = resJson.code || 'nosession'
+        const baseUrl = 'http://orientation.iot.capraconsulting.no.s3-website-eu-west-1.amazonaws.com'
         new QRious({
           element: document.getElementById('qr'),
           background: '#155aaa',
@@ -36,7 +37,7 @@ export default compose (
           level: 'H',
           padding: 15,
           size: 300,
-          value: `https://iotlab.cantara.no/javazone/orientation?session=${sessionkey}`,
+          value: `${baseUrl}?session=${sessionkey}`,
         })
       })
     },
