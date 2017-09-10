@@ -59,8 +59,7 @@ export default compose (
           if (!response.ok) {
             setIsAuth(false)
           }
-        })
-        .catch((error) => {
+        }, (error) => {
           console.log('error', error)
           // Stop next request on any error
           setIsAuth(false)
