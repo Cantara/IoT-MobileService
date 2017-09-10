@@ -26,7 +26,7 @@ export default compose (
       const alphaGammaFlipped = e.alpha < 0 || e.gamma > 180
 
       const eventOrientation = {
-        alpha: alphaGammaFlipped ? e.gamme : e.alpha,
+        alpha: alphaGammaFlipped ? e.gamma : e.alpha,
         beta: e.beta,
         gamma: alphaGammaFlipped ? e.alpha : e.gamma,
       }
@@ -38,9 +38,9 @@ export default compose (
         ? decodeURIComponent(location.search).replace(/^.*=/, '')
         : 'nosession'
       const stringifiedOrientation = {
-        alpha: `${eventOrientation.alpha}`,
-        beta: `${eventOrientation.beta}`,
-        gamma: `${eventOrientation.gamma}`,
+        alpha: `${Math.round(eventOrientation.alpha)}`,
+        beta: `${Math.round(eventOrientation.beta)}`,
+        gamma: `${Math.round(eventOrientation.gamma)}`,
       }
       if (isAuth && canSend) {
         // disable sending until next interval
