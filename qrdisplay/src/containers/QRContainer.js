@@ -49,7 +49,7 @@ export default compose (
       // start timer and generate every n seconds
       setInterval(() =>{
         this.props.generateQr()
-      }, 1000*60*5)
+      }, 1000*10)
     },
   }),
 )(QRCanvas)
