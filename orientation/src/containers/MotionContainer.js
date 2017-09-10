@@ -42,6 +42,7 @@ export default compose (
         beta: `${Math.round(eventOrientation.beta)}`,
         gamma: `${Math.round(eventOrientation.gamma)}`,
       }
+
       if (isAuth && canSend) {
         // disable sending until next interval
         setCanSend(false)
@@ -58,7 +59,8 @@ export default compose (
           if (!response.ok) {
             setIsAuth(false)
           }
-        }, (error) => {
+        })
+        .catch((error) => {
           console.log('error', error)
           // Stop next request on any error
           setIsAuth(false)
