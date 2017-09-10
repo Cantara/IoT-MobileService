@@ -1,6 +1,6 @@
 {
   "name": "orientation",
-  "homepage": "https://iotlab.cantara.no/javazone/orientation",
+  "homepage": "/",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
