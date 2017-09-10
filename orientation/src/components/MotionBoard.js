@@ -9,10 +9,10 @@ const UnsupportedInfo = () => {
   return (
     <div>
       {hasNoDeviceOrientation && (
-        <p id='do-unsupported' className='api-support hidden'>deviceorientation event not supported</p>
+        <p>deviceorientation event not supported</p>
       )}
       {hasNoDeviceMotion && (
-        <p id='dm-unsupported' className='api-support hidden'>devicemotion event not supported</p>
+        <p>devicemotion event not supported</p>
       )}
       {hasNoDeviceOrientation && hasNoDeviceMotion && (
         <p>This box won't work with your current device!</p>
@@ -20,6 +20,14 @@ const UnsupportedInfo = () => {
     </div>
   )
 }
+
+const ReconnectInfo = () => (
+  <p className='reconnect-info'>
+    Not connected to the cube.
+    <br />
+    Please re-scan QRcode to reconnect!
+  </p>
+)
 
 const Logoboard = ({ alpha, beta, gamma }) => {
   const rotate = `rotateX(${beta}deg) rotateY(${gamma}deg) rotateZ(${alpha}deg)`
@@ -39,11 +47,14 @@ const Logoboard = ({ alpha, beta, gamma }) => {
   )
 }
 
-const MotionBoard = ({ orientation }) => {
+const MotionBoard = ({ orientation, isAuth }) => {
   return (
     <div>
       <UnsupportedInfo />
       <Logoboard {...orientation}/>
+      {!isAuth && (
+        <ReconnectInfo />
+      )}
     </div>
   )
 }
