@@ -3,6 +3,12 @@ import { compose, lifecycle, withState, withHandlers } from 'recompose'
 
 import MotionBoard from '../components/MotionBoard'
 
+const getRandomIntInclusive = (min, max) => {
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
 export default compose (
   withRouter,
   withState('orientation', 'setOrientation', () => ({
@@ -12,6 +18,7 @@ export default compose (
   })),
   withState('isAuth', 'setIsAuth', true),
   withState('canSend', 'setCanSend', true),
+  withState('randomBool', 'setRandomBool', getRandomIntInclusive(0, 1)),
   withHandlers({
     handleOrientation: ({
       location,

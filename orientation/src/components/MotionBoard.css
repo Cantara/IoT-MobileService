@@ -17,8 +17,12 @@
   opacity: 0.6;
 }
 
-.reconnect-info {
+.reconnect-info,
+.contact {
   background-color: black;
   padding: 15px;
   color: white;
+}
+.contact > a {
+  color: #429BCF;
 }

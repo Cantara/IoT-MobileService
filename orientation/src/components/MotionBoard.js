@@ -47,7 +47,20 @@ const Logoboard = ({ alpha, beta, gamma }) => {
   )
 }
 
-const MotionBoard = ({ orientation, isAuth }) => {
+const Contactus = ({ randomBool }) => {
+  const email = randomBool
+    ? 'oth@capraconsulting.no'
+    : 'ses@capraconsulting.no'
+  return (
+    <p className='contact'>
+      <a href={`mailto:${email}?subject=Livet, lyset og Capra&body=Hei! Jeg vil gjerne ta en prat om Capra.`}>
+        Ps. lyst på en gratis kaffe og en jovial prat om livet, lyset og Capra? Send melding hit da vel?
+      </a>
+    </p>
+  )
+}
+
+const MotionBoard = ({ orientation, isAuth, randomBool }) => {
   return (
     <div>
       <UnsupportedInfo />
@@ -55,6 +68,7 @@ const MotionBoard = ({ orientation, isAuth }) => {
       {!isAuth && (
         <ReconnectInfo />
       )}
+      <Contactus randomBool={randomBool} />
     </div>
   )
 }
